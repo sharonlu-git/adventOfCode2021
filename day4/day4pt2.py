@@ -1,6 +1,6 @@
 # Sharon Lu
 # Advent of Code
-# Day 4 Part 1
+# Day 4 Part 2
 
 ### Constants
 BOARD_SIZE = 5
@@ -62,8 +62,8 @@ for i in range(int(len(fileLines)/(BOARD_SIZE+1))):
     startingIndex = i*BOARD_SIZE+i*1+2
     dictBingoBoards[i] = fileLines[startingIndex: startingIndex+BOARD_SIZE]
 
-bingo = False
 # Iterate through drawn numbers
+finalBingo = False
 for i in range(len(drawnNums)):
     # Function to cross off numbers
     dictBingoBoards = markOffNums(dictBingoBoards, drawnNums[i])
@@ -71,10 +71,13 @@ for i in range(len(drawnNums)):
     # Function to check for valid bingo cards
     for key in dictBingoBoards.keys():
         if checkForBingo(dictBingoBoards[key]) == True:
-            boardSum = calculateBoardSum(dictBingoBoards[key])
-            bingo = True
-            break
-    if bingo == True:
+            keysToPop.append(key)
+            if len(dictBingoBoards) == 1:
+                boardSum = calculateBoardSum(dictBingoBoards[key])
+                finalBingo = True
+    for popKey in keysToPop:
+        dictBingoBoards.pop(popKey)
+    if finalBingo == True:
         break
 print(int(boardSum)*int(drawnNums[i]))
 
